@@ -1,0 +1,31 @@
+a {
+  transition: color $duration ease 0ms;
+
+  &:not([href]) {
+    cursor: pointer;
+  }
+}
+
+[data-theme='dark'] {
+  a {
+    &:not([href]) {
+      color: color(dark, primary);
+    }
+
+    &:hover {
+      color: rgba(color(dark, primary), 0.85);
+    }
+  }
+}
+
+[data-theme='light'] {
+  a {
+    &:not([href]) {
+      color: color(light, primary);
+    }
+
+    &:hover {
+      color: lighten(color(light, primary), 25%);
+    }
+  }
+}

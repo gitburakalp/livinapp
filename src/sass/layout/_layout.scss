@@ -1,4 +1,6 @@
 html {
+  font-size: 62.5%;
+
   &[data-theme='dark'] {
     background-color: color(dark, bg);
     color: color(dark, primary);
@@ -7,5 +9,24 @@ html {
   &[data-theme='light'] {
     background-color: color(light, bg);
     color: color(light, primary);
+  }
+}
+
+body {
+  font-size: 1rem;
+}
+
+%mb-0 {
+  margin-bottom: 0;
+}
+
+figure {
+  @extend %mb-0;
+}
+
+@for $i from 1 to 7 {
+  h#{$i} {
+    @extend %mb-0;
+    font-weight: 700;
   }
 }

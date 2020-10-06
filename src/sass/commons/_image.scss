@@ -1,0 +1,39 @@
+.image {
+  position: relative;
+  width: 100%;
+  clear: both;
+
+  &.poster {
+    padding-bottom: $posterAr * 100%;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity $duration ease 0ms;
+    object-fit: cover;
+
+    &.lazy {
+      opacity: 0;
+    }
+  }
+}
+
+[data-theme='dark'] {
+  .image {
+    img {
+      background-color: color(dark, bg);
+    }
+  }
+}
+
+[data-theme='light'] {
+  .image {
+    img {
+      background-color: color(light, bg);
+    }
+  }
+}
