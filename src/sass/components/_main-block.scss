@@ -1,3 +1,32 @@
 .main-block {
   position: relative;
+
+  &-slide {
+    position: relative;
+
+    figure {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.4rem;
+      z-index: 3;
+    }
+
+    figcaption {
+      position: relative;
+      padding: 4rem 1rem 1rem;
+      margin-top: -3rem;
+      background-color: rgba($colors--white, 0);
+      border-radius: 1.4rem;
+      min-height: 7.4rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      h5 {
+        font-size: 1rem;
+      }
+    }
+  }
 }

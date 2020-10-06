@@ -31,5 +31,45 @@
         }
       }
     }
+
+    .fixed-menu {
+      $pdAmount: 1.4rem;
+
+      position: fixed;
+      bottom: $pdAmount;
+      left: $pdAmount;
+      right: $pdAmount;
+      padding: 1rem 2rem;
+      border-radius: 4rem;
+      overflow: hidden;
+      z-index: 4;
+      background-color: rgba($colors--white, 0.25);
+      -webkit-backdrop-filter: blur(3px);
+
+      .list {
+        display: flex;
+        flex-wrap: nowrap;
+
+        > * {
+          position: relative;
+          width: calc(100% / 4);
+          min-height: 1px;
+          text-align: center;
+        }
+
+        &-item {
+          font-size: 1.125rem;
+
+          &:not(.is-active) {
+            color: rgba($colors--white, 0.5);
+          }
+        }
+
+        &-link {
+          display: block;
+          color: inherit !important;
+        }
+      }
+    }
   }
 }
