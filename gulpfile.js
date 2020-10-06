@@ -1,4 +1,5 @@
 let gulp = require('gulp'),
+  babel = require('gulp-babel'),
   sass = require('gulp-sass'),
   rename = require('gulp-rename'),
   autoprefixer = require('gulp-autoprefixer'),
@@ -53,19 +54,33 @@ var functionsBrowserSync = function (done) {
       .pipe(gulp.dest(roots.srcDir + 'css'))
       .pipe(browserSync.stream());
   },
-  functionsHtml = function () {
-    return gulp.src(roots.srcDir + '**/*.html').pipe(browserSync.stream());
-  },
-  functionsWatch = function () {
+  functionsScripts = function () {
+    return gulp
+      .src(roots.jsDir + 'main.js')
+      .pipe(plumber())
+      .pipe(babel())
+      .pipe(
+        rename({
+          suffix: '.min',
+        }),
+      )
+      .pipe(sourcemaps.write('../sources/js'))
+      .pipe(gulp.dest(roots.jsDir));
+  };
+(functionsHtml = function () {
+  return gulp.src(roots.srcDir + '**/*.html').pipe(browserSync.stream());
+}),
+  (functionsWatch = function () {
     gulp.watch(roots.srcDir + 'sass/**/*.scss', gulp.series('sass'));
     gulp.watch(roots.srcDir + 'js/*.js', gulp.series('html'));
     gulp.watch(roots.srcDir + '**/*.html', gulp.series('html'));
-  };
+  });
 
 gulp.task('browser-sync', functionsBrowserSync);
 gulp.task('sass', functionsSass);
+gulp.task('scripts', functionsScripts);
 
 gulp.task('html', functionsHtml);
 gulp.task('watch', functionsWatch);
 
-gulp.task('default', gulp.series('browser-sync', 'html', 'sass', 'watch'));
+gulp.task('default', gulp.series('browser-sync', 'html', 'scripts', 'sass', 'watch'));

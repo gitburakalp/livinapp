@@ -2,13 +2,17 @@ html {
   font-size: 62.5%;
 
   &[data-theme='dark'] {
-    background-color: color(dark, bg);
-    color: color(dark, primary);
+    body {
+      background-color: color(dark, bg);
+      color: color(dark, primary);
+    }
   }
 
   &[data-theme='light'] {
-    background-color: color(light, bg);
-    color: color(light, primary);
+    body {
+      background-color: color(light, bg);
+      color: color(light, primary);
+    }
   }
 }
 
@@ -22,6 +26,14 @@ body {
 
 figure {
   @extend %mb-0;
+}
+
+ul {
+  &:not(.standart) {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
 }
 
 @for $i from 1 to 7 {
