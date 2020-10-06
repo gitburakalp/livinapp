@@ -1,0 +1,19 @@
+$colors--white: #fff;
+$colors--black: #000;
+
+$colors: (
+  dark: (
+    bg: $colors--black,
+    primary: $colors--white,
+    secondary: rgba($colors--white, 0.5),
+    tertiary: rgba($colors--white, 0.25),
+    quarternary: rgba($colors--white, 0.125),
+  ),
+  light: (
+    bg: $colors--white,
+    primary: $colors--black,
+    secondary: rgba($colors--black, 0.5),
+    tertiary: rgba($colors--black, 0.25),
+    quarternary: rgba($colors--black, 0.125),
+  ),
+);

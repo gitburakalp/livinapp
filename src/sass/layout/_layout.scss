@@ -1,0 +1,11 @@
+html {
+  &[data-theme='dark'] {
+    background-color: color(dark, bg);
+    color: color(dark, primary);
+  }
+
+  &[data-theme='light'] {
+    background-color: color(light, bg);
+    color: color(light, primary);
+  }
+}

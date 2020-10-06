@@ -1,0 +1,42 @@
+{
+  "name": "livinapp",
+  "version": "1.0.0",
+  "description": "Livinapp",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitburakalp/livinapp.git"
+  },
+  "keywords": [
+    "Living",
+    "application"
+  ],
+  "author": "Burak Alp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gitburakalp/livinapp/issues"
+  },
+  "homepage": "https://github.com/gitburakalp/livinapp#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.0.1",
+    "bootstrap": "^4.5.2",
+    "browser-sync": "^2.26.12",
+    "browserslist": "^4.14.5",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^9.0.0",
+    "gulp-purgecss": "^3.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-size": "^3.0.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1",
+    "postcss-import": "^12.0.1",
+    "swiper": "^6.3.2"
+  }
+}
