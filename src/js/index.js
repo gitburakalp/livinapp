@@ -1,4 +1,6 @@
 import Swiper from 'swiper/bundle';
+// require('webpack-jquery-ui/slider ');
+
 import '../sass/main.scss';
 
 const DATE = new Date();
@@ -9,7 +11,7 @@ const SLIDER_ARR = [];
 const ROOT = document.documentElement;
 
 function daysInMonth(month, year) {
-  return new Date(year, month, 0).getDate() + ',' + new Date(year, month, 0).getDay();
+  return new Date(year, month, 0).getDate();
 }
 
 function fillDays(month, year) {
@@ -18,11 +20,8 @@ function fillDays(month, year) {
     tr: ['Pzr', 'Pzt', 'Sal', 'Çrş', 'Per', 'Cu', 'Cmt'],
   };
 
-  var thisDays = parseInt(daysInMonth(month, year).split(',')[0]);
-  var thisDayNames = daysInMonth(month, year).split(',')[1];
-
+  var thisDays = daysInMonth(month, year);
   var today = DATE.getDate();
-  console.log(today);
 
   for (let i = today; i < thisDays + 1; i++) {
     $('#daysSlider .datetime-wrapper').each(function () {
@@ -39,13 +38,18 @@ function fillDays(month, year) {
     var $this = $(this);
 
     var config = {
+      init: false,
       slidesPerView: 5.5,
       spaceBetween: 10,
+      freeMode: true,
       speed: 600,
       slideToClickedSlide: true,
     };
 
-    new Swiper($this[0], config);
+    var swiper = new Swiper($this[0], config);
+
+    swiper.init();
+    swiper.snapGrid = [...swiper.slidesGrid];
   });
 }
 
@@ -211,5 +215,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 $(window).on('load', function () {
   $('body').removeClass('is-loading');
-  fillDays(DATE.getMonth(), 2020);
+  // fillDays(DATE.getMonth(), 2020);
 });

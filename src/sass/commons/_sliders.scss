@@ -22,8 +22,8 @@
   padding: 1rem;
   margin-right: -3rem;
   background-color: $colors--white;
-  border-top-left-radius: 1.4rem;
-  border-bottom-left-radius: 1.4rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
   box-shadow: 0 0 10px 0 rgba($colors--black, 0.125);
 
   .swiper-slide {
@@ -35,7 +35,7 @@
     font-size: 1.6rem;
     color: $colors--black;
     transition: background-color $duration;
-    border-radius: 1.4rem;
+    border-radius: 1rem;
 
     &:not(.swiper-slide-active) {
       span {
@@ -63,7 +63,6 @@
 
     &-active {
       background-color: darken($colors--white, 12.5%);
-      color: $colors--white;
       box-shadow: 0 0 10px 0 rgba($colors--black, 0.125);
     }
   }
