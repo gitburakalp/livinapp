@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/js/index.js',
@@ -12,7 +13,7 @@ module.exports = {
   devServer: {
     inline: true,
     contentBase: './dist',
-    host: '192.168.1.2',
+    host: '192.168.1.31',
     port: 3000,
   },
   module: {
@@ -29,15 +30,10 @@ module.exports = {
         use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
+        test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
           {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/',
-              publicPath: url => `../fonts/${url}`,
-            },
+            loader: 'file-loader', // Or `url-loader` or your other loader
           },
         ],
       },
@@ -70,6 +66,9 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'src/Storage', to: 'Storage' }],
     }),
   ],
 };

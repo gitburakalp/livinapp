@@ -1,7 +1,7 @@
 .header {
   @include media-breakpoint-down(sm) {
     .navbar {
-      padding: 3rem 2rem;
+      padding: 0;
 
       &-brand {
         position: absolute;
@@ -24,6 +24,10 @@
               width: 75%;
             }
 
+            &:nth-child(3) {
+              width: 50%;
+            }
+
             + * {
               margin-top: 4px;
             }
@@ -33,43 +37,104 @@
     }
 
     .fixed-menu {
-      $pdAmount: 1.4rem;
-
       position: fixed;
-      bottom: $pdAmount;
-      left: $pdAmount;
-      right: $pdAmount;
-      padding: 1rem 2rem;
-      border-radius: 4rem;
-      overflow: hidden;
-      z-index: 4;
-      background-color: rgba($colors--white, 0.25);
-      -webkit-backdrop-filter: blur(3px);
+      left: 3rem;
+      right: 3rem;
+      border-radius: 1.6rem;
+      padding: 1rem;
+      background-color: $colors--white;
+      backdrop-filter: blur(3px);
 
-      .list {
+      bottom: 3rem;
+      z-index: 99;
+
+      @keyframes active {
+        from {
+          width: 0px;
+        }
+      }
+
+      ul {
         display: flex;
-        flex-wrap: nowrap;
+        flex-flow: nowrap;
+        justify-content: space-around;
 
         > * {
           position: relative;
-          width: calc(100% / 4);
           min-height: 1px;
+          flex-basis: 0;
+          flex-grow: 1;
+          width: auto;
+          max-width: 100%;
+          color: $colors--black;
           text-align: center;
-        }
+          padding: 0.5rem;
+          border-radius: 1rem;
 
-        &-item {
-          font-size: 1.125rem;
+          img {
+            height: 24px;
+          }
 
-          &:not(.is-active) {
-            color: rgba($colors--white, 0.5);
+          span {
+            position: absolute;
+            font-size: 1.125rem;
+            opacity: 0;
+            white-space: nowrap;
+          }
+
+          &.active {
+            width: auto;
+            flex: 0 0 auto;
+            background-color: darken($colors--white, 10%);
+
+            span {
+              position: relative;
+
+              opacity: 1;
+              transition: all 750ms;
+
+              margin-left: 1rem;
+            }
           }
         }
 
-        &-link {
-          display: block;
-          color: inherit !important;
+        li {
+          a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: inherit !important;
+          }
         }
       }
     }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.backdrop-filter {
+  position: fixed;
+  background-repeat: no-repeat;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(12.5px);
+  opacity: 0;
+
+  &.fadeIn {
+    animation: fadeIn 1s;
+    opacity: 1;
   }
 }

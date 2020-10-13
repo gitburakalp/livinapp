@@ -18,6 +18,24 @@ html {
 
 body {
   font-size: 1rem;
+
+  main {
+    transition: all 750ms;
+  }
+
+  &.is-loading {
+    main {
+      opacity: 0;
+      transform: translateY(50%);
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    .container {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
 }
 
 %mb-0 {

@@ -4,7 +4,11 @@
   clear: both;
 
   &.poster {
-    padding-bottom: $posterAr * 100%;
+    padding-bottom: 1480 / 1920 * 100%;
+
+    @include media-breakpoint-up(md) {
+      padding-bottom: $posterAr * 100%;
+    }
   }
 
   img {
@@ -15,10 +19,6 @@
     height: 100%;
     transition: opacity $duration ease 0ms;
     object-fit: cover;
-
-    &.lazy {
-      opacity: 0;
-    }
   }
 }
 
