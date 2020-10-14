@@ -8,6 +8,11 @@
     position: relative;
     padding: 5px;
 
+    &.is-past {
+      opacity: 0.85;
+      filter: grayscale(100%);
+    }
+
     figure {
       position: relative;
       overflow: hidden;

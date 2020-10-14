@@ -1,219 +1,180 @@
 import Swiper from 'swiper/bundle';
-// require('webpack-jquery-ui/slider ');
-
 import '../sass/main.scss';
+
+// Components
+import mainSlide from './ui/components/main-slide';
+import timelineDate from './ui/components/timeline-date';
+import timelineHour from './ui/components/timeline-hour';
 
 const DATE = new Date();
 const LANG = $('html').attr('lang');
-const CURRENTLANG = LANG != 'en' ? LANG + '-' + LANG.toUpperCase() : 'en-US';
-const SLIDERS = $('[data-prop]');
-const SLIDER_ARR = [];
-const ROOT = document.documentElement;
 
-function daysInMonth(month, year) {
-  return new Date(year, month, 0).getDate();
-}
+var isFirstView = true;
+var type = 'flavours';
+var returnedData = [];
+var ww = $(window).outerWidth();
 
-function fillDays(month, year) {
-  var days = {
-    en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    tr: ['Pzr', 'Pzt', 'Sal', 'Çrş', 'Per', 'Cu', 'Cmt'],
-  };
-
-  var thisDays = daysInMonth(month, year);
-  var today = DATE.getDate();
-
-  for (let i = today; i < thisDays + 1; i++) {
-    $('#daysSlider .datetime-wrapper').each(function () {
-      var d = new Date(year, month, i).getDay();
-
-      $(this).append(`<div class='datetime-slide swiper-slide'>
-        <span class="d-block">${days.tr[d]}</span>
-        ${i}
-      </div>`);
-    });
+/**
+ * Timeline Init
+ * @param {{dataType:string}=}
+ * dataType: Data Type must be "flavours","spa","entertaiment"
+ */
+function initTimeline(dataType) {
+  if (dataType != 'entertainment') {
+    timelineHour.fillTimelineHour();
+  } else {
+    timelineDate.fillTimelineDate();
   }
-
-  $('#daysSlider').each(function () {
-    var $this = $(this);
-
-    var config = {
-      init: false,
-      slidesPerView: 5.5,
-      spaceBetween: 10,
-      freeMode: true,
-      speed: 600,
-      slideToClickedSlide: true,
-    };
-
-    var swiper = new Swiper($this[0], config);
-
-    swiper.init();
-    swiper.snapGrid = [...swiper.slidesGrid];
-  });
 }
-
-window.fillDays = fillDays;
-window.daysInMonth = daysInMonth;
 
 //#region FUNCTIONS
 
-const parallaxSlides = () => {
-  $('.swiper-container[data-prop="sliders"]').each((idx, e) => {
-    var config = {
-      slidesPerView: 1.5,
-      speed: 600,
-      // parallax: true,
-      // loop: true,
-      // effect: 'slide',
-      mousewheelControl: 1,
-    };
+/**
+ * Convert Single Digit Number to Double With Pad Left or Right
+ * @param {{padType:string}=}
+ * padType: This must be "start" or "end"
+ * @param {{val:int}=}
+ * val: Single Digit Number
+ */
+function convertTwoPad(padType, val) {
+  padType = padType.toLowerCase();
 
-    new Swiper(e, config);
-  });
-};
-
-const CONV_PAD = (padType, val) => {
   if (padType == 'start') {
     return val.toString().padStart(2, '0');
   } else {
     return val.toString().padEnd(2, 0);
   }
-};
+}
 
-const GET_CURRENT_DATE = lang => {
-  var dateArr1 = CONV_PAD('start', lang != 'en' ? DATE.getDate() : DATE.getMonth() + 1);
-  var dateArr2 = CONV_PAD('start', lang != 'en' ? DATE.getMonth() + 1 : DATE.getDate());
+/**
+ * Function return to Current Date from Language Format
+ */
+function getCurrentDate() {
+  var dateArr1 = convertTwoPad('start', LANG != 'en' ? DATE.getDate() : DATE.getMonth() + 1);
+  var dateArr2 = convertTwoPad('start', LANG != 'en' ? DATE.getMonth() + 1 : DATE.getDate());
   var dateArr3 = DATE.getFullYear();
 
   return `${dateArr1}.${dateArr2}.${dateArr3}`;
-};
-
-const FILL_AND_SET_SLIDES = (itemLocation, sliderWrapper, imgSource, title, itemDate, itemTime, itemStartHour, itemEndHour) => {
-  itemLocation = itemLocation == '' ? 'DefaultLocation' : itemLocation;
-
-  var sliderHTML = `
-    <div class="swiper-slide" data-date="${itemDate}" data-time="${itemTime}">
-      <div class="resizable-div">
-        <figure class="image poster swiper-image">
-          <img src="${imgSource}" alt="${title.trim()}" />
-        </figure>
-        <figcaption>
-          <h5 class="title">${title}</h5>
-
-          <div class="form-row mt-auto">
-            <div class="col-auto">
-              <a href="" class="location" data-swiper-parallax-opacity="0" data-swiper-parallax-duration="500">${itemLocation}</a>
-            </div>
-            <div class="col-auto">
-              <p class="list" data-swiper-parallax-x="25" data-swiper-parallax-opacity="0" data-swiper-parallax-duration="500">${itemStartHour} | ${itemEndHour}</p>
-            </div>
-          </div>
-          
-        </figcaption>
-      </div>
-    </div>
-    `;
-
-  $(sliderWrapper).append(sliderHTML);
-};
+}
 
 //#endregion
 
-var returnedData = [];
-var selectedDate = GET_CURRENT_DATE(LANG);
-var selectedTime = '10:00';
-var type = 'flavours';
-var ww = $(window).outerWidth();
-var url = `https://www.rubiplatinum.com/api/v1/services?lang=${CURRENTLANG}`;
-
-let interleaveOffset = 0.5;
-
 /* Window Declarations */
-window.SLIDER_ARR = SLIDER_ARR;
 window.returnedData = returnedData;
 
-const GetData = new Promise(function (resolve, reject) {
-  var request = new XMLHttpRequest();
-  request.open('GET', url);
-
-  request.onload = function () {
-    if (request.status == 200) {
-      resolve(JSON.parse(request.response).data);
-    } else {
-      reject(Error(request.statusText));
-    }
-  };
-
-  request.send();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  GetData.then(function (x) {
-    x.forEach(function (e) {
-      if (e.serviceTypeName.toLowerCase() == 'flavours' && e.name.toLowerCase() == 'bars') {
-        e.subTenantServices.forEach(function (e) {
-          var elLocation = [];
-
-          e.filterLabels.forEach(function (elem) {
-            if (elem.toLowerCase().includes('location')) {
-              elLocation.push(elem);
-            }
-          });
-
-          returnedData.push(e);
-
-          FILL_AND_SET_SLIDES(elLocation, '#mainSlider .swiper-wrapper', e.images[0].path, e.name, '', e.startValue, e.startTime, e.endTime);
+/**
+ * Get Json data From Url
+ * @param {string} dataUrl
+ */
+function GetDataFromUrl(dataUrl) {
+  return new Promise(function (resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', dataUrl);
+    xhr.onload = function () {
+      if (this.status >= 200 && this.status < 300) {
+        resolve(xhr.response);
+      } else {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText,
         });
       }
-    });
+    };
+    xhr.onerror = function () {
+      reject({
+        status: this.status,
+        statusText: xhr.statusText,
+      });
+    };
+    xhr.send();
+  });
+}
 
-    $('#mainSlider').each((idx, e) => {
-      var $this = $(e);
+/**
+ * Api Url must be string
+ * @param {string} url
+ * @param {string} type
+ */
+const GetData = url => {
+  var url = `http://www.rubiplatinum.com/api/v1/services?lang=${LANG != 'en' ? LANG + '-' + LANG.toUpperCase() : 'en-US'}`;
 
-      var config = {
-        slidesPerView: 1.15,
-        speed: 600,
-        centeredSlides: true,
-        parallax: true,
-        on: {
-          init: function () {
-            var $background = $('.backdrop-filter');
-            var imgSource = $this.find('.swiper-slide-active img').attr('src').split(/.jpg/)[0] + '_thumb.jpg';
+  if (isFirstView && (type == 'flavours' || type == 'spa')) {
+    GetDataFromUrl(url).then(x => {
+      var data = JSON.parse(x).data;
 
-            $background.attr('style', `background-image:url("${imgSource}")`);
-          },
-          transitionStart: function () {
-            var $background = $('.backdrop-filter');
-            var imgSource = $this.find('.swiper-slide-active img').attr('src').split(/.jpg/)[0] + '_thumb.jpg';
+      data.forEach(function (e) {
+        returnedData.push(e);
+      });
 
-            $background.removeClass('fadeIn');
+      returnedData.forEach(e => {
+        if (e.serviceTypeName.toLowerCase() == type) {
+          e.subTenantServices.forEach(function (e) {
+            var elLocation = [];
 
-            setTimeout(function () {
+            e.filterLabels.forEach(function (elem) {
+              if (elem.toLowerCase().includes('location')) {
+                elLocation.push(elem);
+              }
+            });
+
+            mainSlide.fillMainSlide(elLocation, '#mainSlider .swiper-wrapper', e.images[0].path, e.name, '', e.startValue, e.startTime, e.endTime);
+          });
+        }
+      });
+
+      $('#mainSlider').each((idx, e) => {
+        var $this = $(e);
+
+        var config = {
+          slidesPerView: 1.15,
+          speed: 600,
+          centeredSlides: true,
+          parallax: true,
+          on: {
+            init: function () {
+              var $background = $('.backdrop-filter');
+              var imgSource = $this.find('.swiper-slide-active img').attr('src').split(/.jpg/)[0] + '_thumb.jpg';
+
               $background.attr('style', `background-image:url("${imgSource}")`);
-              $background.addClass('fadeIn');
-            }, 25);
+            },
+            transitionStart: function () {
+              var $background = $('.backdrop-filter');
+              var imgSource = $this.find('.swiper-slide-active img').attr('src').split(/.jpg/)[0] + '_thumb.jpg';
+
+              $background.removeClass('fadeIn');
+
+              setTimeout(function () {
+                $background.attr('style', `background-image:url("${imgSource}")`);
+                $background.addClass('fadeIn');
+              }, 25);
+            },
           },
-        },
-      };
+        };
 
-      const swiper = new Swiper(e, config);
+        const swiper = new Swiper(e, config);
+      });
     });
+  }
 
-    $('.fixed-menu ul').each(function () {
-      $(this)
-        .find('li')
-        .on('click', function (e) {
-          var $this = $(this);
+  isFirstView = false;
+};
 
-          $('.fixed-menu ul li').removeClass('active');
-          $this.addClass('active');
-        });
-    });
+document.addEventListener('DOMContentLoaded', () => {
+  GetData();
+
+  $('.fixed-menu ul').each(function () {
+    $(this)
+      .find('li')
+      .on('click', function (e) {
+        var $this = $(this);
+
+        $('.fixed-menu ul li').removeClass('active');
+        $this.addClass('active');
+      });
   });
 });
 
 $(window).on('load', function () {
+  initTimeline('flavours');
   $('body').removeClass('is-loading');
-  // fillDays(DATE.getMonth(), 2020);
 });

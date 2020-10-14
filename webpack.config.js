@@ -13,7 +13,7 @@ module.exports = {
   devServer: {
     inline: true,
     contentBase: './dist',
-    host: "192.168.1.2",
+    host: '192.168.1.2',
     port: 3000,
   },
   module: {
@@ -52,6 +52,12 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    alias: {
+      // bind version of jquery-ui
+      'jquery-ui': 'jquery-ui-dist/jquery-ui.js',
+    },
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/main.min.css',
@@ -66,8 +72,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      'window.jQuery': "jquery'",
-      'window.$': 'jquery',
+      'window.jQuery': 'jquery',
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: 'src/Storage', to: 'Storage' }],

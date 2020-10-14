@@ -1,0 +1,13 @@
+#timelineBlock {
+  height: auto;
+  background-color: $colors--white;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: none;
+}
+
+.circles {
+  position: relative;
+  display: inline-block;
+  color: $colors--black;
+}
