@@ -31,7 +31,7 @@ function fillTimelineHour() {
 
     swiper.init();
     swiper.snapGrid = [...swiper.slidesGrid];
-    swiper.slideTo(date.getHours() - 8);
+    swiper.slideTo(date.getHours() - 8, 1000);
 
     var thisHourSlide = $this.find(`.swiper-slide[data-hour=${date.getHours()}]`);
     window.thisHourSlide = thisHourSlide;

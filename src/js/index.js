@@ -1,4 +1,7 @@
 import Swiper from 'swiper/bundle';
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 import '../sass/main.scss';
 
 // Components
@@ -109,18 +112,18 @@ const GetData = url => {
       returnedData.forEach(e => {
         if (e.serviceTypeName.toLowerCase() == type) {
           e.subTenantServices.forEach(function (e) {
-            var elLocation = [];
-
-            e.filterLabels.forEach(function (elem) {
-              if (elem.toLowerCase().includes('location')) {
-                elLocation.push(elem);
-              }
-            });
-
-            mainSlide.fillMainSlide(elLocation, '#mainSlider .swiper-wrapper', e.images[0].path, e.name, '', e.startValue, e.startTime, e.endTime);
+            mainSlide.fillMainSlide(e);
           });
         }
       });
+
+      var mainSliderArray = [];
+
+      $('#mainSlider .swiper-wrapper > *').each(function (idx, e) {
+        mainSliderArray.push(e);
+      });
+
+      var thisHourSlideIndex = mainSliderArray.indexOf($(`#mainSlider .swiper-slide[data-start-value='${DATE.getHours() * 60}']`)[0]);
 
       $('#mainSlider').each((idx, e) => {
         var $this = $(e);
@@ -152,6 +155,7 @@ const GetData = url => {
         };
 
         const swiper = new Swiper(e, config);
+        swiper.slideTo(thisHourSlideIndex, 2500);
       });
     });
   }
