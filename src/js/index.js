@@ -15,6 +15,7 @@ const LANG = $('html').attr('lang');
 var isFirstView = true;
 var type = 'flavours';
 var returnedData = [];
+var rData = [];
 var ww = $(window).outerWidth();
 
 /**
@@ -109,12 +110,40 @@ const GetData = url => {
         returnedData.push(e);
       });
 
+      function compare(a, b) {
+        var aData = a.startValue;
+        var bData = b.startValue;
+
+        if (a.startHour < a.endHour && a.startValue > a.endValue && !(a.startValue == 1440 && a.endValue == 1439)) {
+          return -1;
+        }
+
+        if (aData < bData) {
+          return -1;
+        }
+        if (aData > bData) {
+          return 1;
+        }
+        return 0;
+      }
+
       returnedData.forEach(e => {
         if (e.serviceTypeName.toLowerCase() == type) {
           e.subTenantServices.forEach(function (e) {
-            mainSlide.fillMainSlide(e);
+            e.endHour = parseInt(e.endTime.split(':')[0]);
+            e.endMinute = parseInt(e.endTime.split(':')[1]);
+
+            e.endValue = e.startHour > e.endHour ? (e.endHour + 24) * 60 + e.endMinute : e.endHour * 60 + e.endMinute;
+
+            rData.push(e);
           });
         }
+      });
+
+      rData.sort(compare);
+
+      rData.forEach(e => {
+        mainSlide.fillMainSlide(e);
       });
 
       var mainSliderArray = [];
@@ -123,7 +152,7 @@ const GetData = url => {
         mainSliderArray.push(e);
       });
 
-      var thisHourSlideIndex = mainSliderArray.indexOf($(`#mainSlider .swiper-slide[data-start-value='${DATE.getHours() * 60}']`)[0]);
+      var thisHourSlideIndex = mainSliderArray.indexOf($(`#mainSlider .swiper-slide:not(.is-past)`)[0]);
 
       $('#mainSlider').each((idx, e) => {
         var $this = $(e);

@@ -10,14 +10,13 @@ function fillMainSlide(data) {
   });
 
   var date = new Date();
-  var startHour = parseInt(data.startTime.split(':')[0]);
-  var endHour = parseInt(data.endTime.split(':')[0]);
 
-  var endValue = startHour > endHour ? (endHour + 24) * 60 + parseInt(data.endTime.split(':')[1]) : endHour * 60 + parseInt(data.endTime.split(':')[1]);
-  var isPast = date.getHours() * 60 > endValue ? 'is-past' : '';
+  var thisHourValue = date.getHours() * 60 + date.getMinutes();
+  var isPast = thisHourValue > data.endValue ? 'is-past' : '';
+  var startEndTime = data.startValue == 1440 && data.endValue == 1439 ? 'All Day' : `${data.startTime} | ${data.endTime}`;
 
   var sliderHTML = `
-      <div class="swiper-slide ${isPast}" data-start-hour="${data.startTime}" data-start-value="${data.startValue}" data-end-hour="${data.endTime}" data-end-value="${endValue}">
+      <div class="swiper-slide ${isPast}" data-start-hour="${data.startTime}" data-end-hour="${data.endTime}" data-start-value="${data.startValue}" data-end-value="${data.endValue}" >
         <div class="resizable-div">
           <figure class="image poster swiper-image">
             <img src="${imgSource}" alt="${title.trim()}" />
@@ -30,7 +29,7 @@ function fillMainSlide(data) {
               </div>
               <div class="col-auto">
                 <p class="list" data-swiper-parallax-x="25" data-swiper-parallax-opacity="0" data-swiper-parallax-duration="500">
-                  ${data.startTime} | ${data.endTime}
+                  ${startEndTime}
                 </p>
               </div>
             </div>

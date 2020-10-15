@@ -12,9 +12,15 @@ function fillTimelineHour() {
     $this.addClass('swiper-container');
     $this.append("<div class='swiper-wrapper'></div>");
 
-    for (var i = 8; i < 25; i++) {
+    for (var i = 1; i < 25; i++) {
+      var hour = i;
+
+      if (hour >= 24) {
+        hour = hour - 24;
+      }
+
       $(this).find('.swiper-wrapper').append(`
-        <div class="swiper-slide font-weight-bold" data-hour="${i}">${i}:00</div>
+        <div class="swiper-slide font-weight-bold" data-hour="${hour}">${hour.toString().padStart(2, '0')}:00</div>
       `);
     }
 
@@ -31,7 +37,7 @@ function fillTimelineHour() {
 
     swiper.init();
     swiper.snapGrid = [...swiper.slidesGrid];
-    swiper.slideTo(date.getHours() - 8, 1000);
+    swiper.slideTo(date.getHours() - 1, 1000);
 
     var thisHourSlide = $this.find(`.swiper-slide[data-hour=${date.getHours()}]`);
     window.thisHourSlide = thisHourSlide;
