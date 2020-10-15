@@ -31,6 +31,23 @@ function fillTimelineHour() {
       freeMode: true,
       speed: 600,
       slideToClickedSlide: true,
+      on: {
+        transitionEnd: function () {
+          var thisHour = $this.find('.swiper-slide-active').data('hour') + ':00';
+
+          var arr = [];
+
+          $('#mainSlider .swiper-wrapper > *').each(function (idx, e) {
+            arr.push(e);
+          });
+
+          var idx = arr.indexOf($(`#mainSlider .swiper-slide[data-start-hour="${thisHour}"]`)[0]);
+
+          if (idx != -1) {
+            $('#mainSlider')[0].swiper.slideTo(idx, 1000);
+          }
+        },
+      },
     };
 
     var swiper = new Swiper($this[0], config);

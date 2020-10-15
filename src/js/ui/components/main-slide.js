@@ -22,7 +22,7 @@ function fillMainSlide(data) {
             <img src="${imgSource}" alt="${title.trim()}" />
           </figure>
           <figcaption>
-            <h5 class="title">${title}</h5>
+            <h5 class="title">${title} ${isPast ? '<span class="list">(expired)</span>' : ''}</h5>
             <div class="form-row mt-auto">
               <div class="col-auto ${elLocation == '' ? 'd-none' : ''}">
                 <a class="location" data-swiper-parallax-opacity="0" data-swiper-parallax-duration="500">${elLocation}</a>
@@ -37,6 +37,8 @@ function fillMainSlide(data) {
          </div>
       </div>
       `;
+
+  console.log($('#mainSlider .swiper-wrapper'));
 
   $('#mainSlider .swiper-wrapper').append(sliderHTML);
 }
