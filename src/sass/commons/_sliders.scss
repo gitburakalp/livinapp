@@ -1,8 +1,10 @@
 .swiper {
   &-container {
     &.ml-offset {
-      margin-left: -3rem;
-      margin-right: -3rem;
+      @include media-breakpoint-down(sm) {
+        margin-left: -3rem;
+        margin-right: -3rem;
+      }
     }
   }
 
@@ -10,22 +12,31 @@
   }
 
   &-slide {
-  }
-}
+    .swiper-lazy {
+      transition: all 450ms cubic-bezier(0.075, 0.82, 0.165, 1);
 
-.datetime {
-  &-slider {
+      &.swiper-lazy-loaded {
+        @extend .fadeIn;
+      }
+
+      &:not(.swiper-lazy-loaded) {
+        filter: blur(3px);
+      }
+    }
   }
 }
 
 #daysSlider,
 #timelineBlock {
   padding: 1rem;
-  margin-right: -3rem;
   background-color: $colors--white;
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
   box-shadow: 0 0 10px 0 rgba($colors--black, 0.125);
+
+  @include media-breakpoint-down(sm) {
+    margin-right: -3rem;
+  }
 
   .swiper-slide {
     position: relative;

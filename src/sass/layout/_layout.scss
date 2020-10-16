@@ -21,6 +21,10 @@ body {
 
   main {
     transition: all 750ms;
+
+    @include media-breakpoint-up(md) {
+      margin-top: 12vh;
+    }
   }
 
   &.is-loading {
@@ -30,10 +34,18 @@ body {
     }
   }
 
-  @include media-breakpoint-down(sm) {
-    .container {
+  .container {
+    @include media-breakpoint-down(sm) {
       padding-left: 3rem;
       padding-right: 3rem;
+    }
+
+    @include media-breakpoint-up(md) {
+      max-width: 93vw;
+    }
+
+    @include media-breakpoint-up(xl) {
+      max-width: calc(90vw - 30px);
     }
   }
 }
